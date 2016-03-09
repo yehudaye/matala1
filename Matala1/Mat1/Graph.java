@@ -1,35 +1,19 @@
 /******************************************************************************
  *  Compilation:  javac Digraph.java
  *  Execution:    java Digraph filename.txt
- *  Dependencies: Bag.java In.java StdOut.java
- *  Data files:   http://algs4.cs.princeton.edu/42digraph/tinyDG.txt
+ *  Dependencies: Collection.java In.java StdOut.java
+ *  Open source:  http://algs4.cs.princeton.edu/code/edu/princeton/cs/algs4/Digraph.java.html
  *
  *  A graph, implemented using an array of lists.
  *  Parallel edges and self-loops are permitted.
- *
- *  % java Digraph tinyDG.txt
- *  13 vertices, 22 edges
- *  0: 5 1 
- *  1: 
- *  2: 0 3 
- *  3: 5 2 
- *  4: 3 2 
- *  5: 4 
- *  6: 9 4 8 0 
- *  7: 6 9
- *  8: 6 
- *  9: 11 10 
- *  10: 12 
- *  11: 4 12 
- *  12: 9 
- *  
+ *  Directed graph
  ******************************************************************************/
-
-package edu.princeton.cs.algs4;
 
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
-
+//import java.util.Collection;
+//import In.java.StdOut;
+//import In.StdOut.java;
 /**
  * The <tt>Digraph</tt> class represents a directed graph of vertices named 0
  * through <em>V</em> - 1. It supports the following two primary operations: add
@@ -37,7 +21,7 @@ import java.util.NoSuchElementException;
  * given vertex. Parallel edges and self-loops are permitted.
  * <p>
  * This implementation uses an adjacency-lists representation, which is a
- * vertex-indexed array of {@link Bag} objects. All operations take constant
+ * vertex-indexed array of {@link Collection} objects. All operations take constant
  * time (in the worst case) except iterating over the vertices adjacent from a
  * given vertex, which takes time proportional to the number of such vertices.
  * <p>
@@ -45,36 +29,35 @@ import java.util.NoSuchElementException;
  * href="http://algs4.cs.princeton.edu/42digraph">Section 4.2</a> of
  * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
- * @author Robert Sedgewick
- * @author Kevin Wayne
  */
 
-public class Digraph {
+public class Graph{
 	private static final String NEWLINE = System.getProperty("line.separator");
-
-	private final int V; // number of vertices in this digraph
-	private int E; // number of edges in this digraph
-	private Bag<Integer>[] adj; // adj[v] = adjacency list for vertex v
-	private int[] indegree; // indegree[v] = indegree of vertex v
+	private final int nodes; // number of nodes in this digraph
+	private int edges; // number of edges in this digraph
+	private Collection<Integer>[] adj; // adj[nodes] = adjacency list for vertex v
+	private int[] indegree; // indegree[nodes] = indegree of vertex v ( number of directed edges )
+	private double weight;   // weight of a edge
 
 	/**
-	 * Initializes an empty digraph with <em>V</em> vertices.
+	 * Initializes an empty graph with <em>V</em> vertices.
 	 *
 	 * @param V
 	 *            the number of vertices
 	 * @throws IllegalArgumentException
 	 *             if V < 0
 	 */
-	public Digraph(int V) {
-		if (V < 0)
-			throw new IllegalArgumentException(
-					"Number of vertices in a Digraph must be nonnegative");
-		this.V = V;
-		this.E = 0;
-		indegree = new int[V];
-		adj = (Bag<Integer>[]) new Bag[V];
-		for (int v = 0; v < V; v++) {
-			adj[v] = new Bag<Integer>();
+	@SuppressWarnings("unchecked")
+	public Graph(int nodes) {
+		if (nodes < 0)
+			throw new IllegalArgumentException("Number of vertices in a Digraph must be nonnegative");
+		this.nodes = nodes;
+		this.edges = 0;
+		indegree = new int[nodes];
+		weight = 0;
+		adj = (Collection<Integer>[]) new Collection[nodes];
+		for (int v = 0; v < nodes; v++) {
+			adj[v] = new Collection<Integer>();
 		}
 	}
 
@@ -91,25 +74,24 @@ public class Digraph {
 	 * @throws IllegalArgumentException
 	 *             if the number of vertices or edges is negative
 	 */
-	public Digraph(In in) {
+	public Graph(In in) {
 		try {
-			this.V = in.readInt();
-			if (V < 0)
-				throw new IllegalArgumentException(
-						"Number of vertices in a Digraph must be nonnegative");
-			indegree = new int[V];
-			adj = (Bag<Integer>[]) new Bag[V];
-			for (int v = 0; v < V; v++) {
-				adj[v] = new Bag<Integer>();
+			this.nodes = in.readInt();
+			if (nodes < 0)
+				throw new IllegalArgumentException("Number of vertices in a Digraph must be nonnegative");
+			indegree = new int[nodes];
+			adj = (Collection<Integer>[]) new Collection[nodes];
+			for (int v = 0; v < nodes; v++) {
+				adj[v] = new Collection<Integer>();
 			}
-			int E = in.readInt();
-			if (E < 0)
-				throw new IllegalArgumentException(
-						"Number of edges in a Digraph must be nonnegative");
-			for (int i = 0; i < E; i++) {
+			int edges = in.readInt();
+			if (edges < 0)
+				throw new IllegalArgumentException(	"Number of edges in a Digraph must be nonnegative");
+			for (int i = 0; i < edges; i++) {
+				int u = in.readInt();
 				int v = in.readInt();
-				int w = in.readInt();
-				addEdge(v, w);
+				double w = in.readInt();
+				addEdge(u,v,w);
 			}
 		} catch (NoSuchElementException e) {
 			throw new InputMismatchException(
@@ -123,7 +105,7 @@ public class Digraph {
 	 * @param G
 	 *            the digraph to copy
 	 */
-	public Digraph(Digraph G) {
+	/*public Digraph(Digraph G) {
 		this(G.V());
 		this.E = G.E();
 		for (int v = 0; v < V; v++)
@@ -138,15 +120,16 @@ public class Digraph {
 				adj[v].add(w);
 			}
 		}
-	}
+	}*/
 
+	
 	/**
 	 * Returns the number of vertices in this digraph.
 	 *
 	 * @return the number of vertices in this digraph
 	 */
-	public int V() {
-		return V;
+	public int nodes() {
+		return nodes;
 	}
 
 	/**
@@ -154,15 +137,14 @@ public class Digraph {
 	 *
 	 * @return the number of edges in this digraph
 	 */
-	public int E() {
-		return E;
+	public int edges() {
+		return edges;
 	}
 
 	// throw an IndexOutOfBoundsException unless 0 <= v < V
 	private void validateVertex(int v) {
-		if (v < 0 || v >= V)
-			throw new IndexOutOfBoundsException("vertex " + v
-					+ " is not between 0 and " + (V - 1));
+		if (v < 0 || v >= nodes)
+			throw new IndexOutOfBoundsException("vertex " + v	+ " is not between 0 and " + (nodes - 1));
 	}
 
 	/**
@@ -175,12 +157,14 @@ public class Digraph {
 	 * @throws IndexOutOfBoundsException
 	 *             unless both 0 <= v < V and 0 <= w < V
 	 */
-	public void addEdge(int v, int w) {
+	
+	public void addEdge(int u, int v, double w) {
+		validateVertex(u);
 		validateVertex(v);
-		validateVertex(w);
-		adj[v].add(w);
-		indegree[w]++;
-		E++;
+		adj[u].add(v);
+		indegree[v]++;
+		edges++;
+		weight = w;
 	}
 
 	/**
@@ -208,10 +192,10 @@ public class Digraph {
 	 * @throws IndexOutOfBoundsException
 	 *             unless 0 <= v < V
 	 */
-	public int outdegree(int v) {
+	/*public int outdegree(int v) {
 		validateVertex(v);
 		return adj[v].size();
-	}
+	}*/
 
 	/**
 	 * Returns the number of directed edges incident to vertex <tt>v</tt>. This
@@ -233,7 +217,7 @@ public class Digraph {
 	 *
 	 * @return the reverse of the digraph
 	 */
-	public Digraph reverse() {
+	/*public Graph reverse() {
 		Digraph R = new Digraph(V);
 		for (int v = 0; v < V; v++) {
 			for (int w : adj(v)) {
@@ -241,7 +225,7 @@ public class Digraph {
 			}
 		}
 		return R;
-	}
+	}*/
 
 	/**
 	 * Returns a string representation of the graph.
@@ -249,13 +233,16 @@ public class Digraph {
 	 * @return the number of vertices <em>V</em>, followed by the number of
 	 *         edges <em>E</em>, followed by the <em>V</em> adjacency lists
 	 */
+	
 	public String toString() {
 		StringBuilder s = new StringBuilder();
-		s.append(V + " vertices, " + E + " edges " + NEWLINE);
-		for (int v = 0; v < V; v++) {
-			s.append(String.format("%d: ", v));
-			for (int w : adj[v]) {
-				s.append(String.format("%d ", w));
+		s.append(nodes + " vertices, " + edges + " edges " + NEWLINE);
+		for (int u = 0; u < nodes; u++) {
+			s.append(String.format("%d: ", u));
+			for (int v : adj[u]) {
+				s.append(String.format("%d ", v));
+				for (int w: edges.weight)
+					s.append(String.format("%d: ",w));
 			}
 			s.append(NEWLINE);
 		}
@@ -266,8 +253,8 @@ public class Digraph {
 	 * Unit tests the <tt>Digraph</tt> data type.
 	 */
 	public static void main(String[] args) {
-		In in = new In(args[0]);
-		Digraph G = new Digraph(in);
+		In in = new In("tinyEWD.txt");
+		Graph G = new Graph(in);
 		StdOut.println(G);
 	}
 
