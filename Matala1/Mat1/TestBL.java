@@ -3,15 +3,14 @@ package C_R;
 import java.util.Stack;
 
 
-
-//Directed Graph
-public class Graph {
+public class TestBL {
     private static final String NEWLINE = System.getProperty("line.separator");
 
-    private final int V;                // number of vertices in this digraph
-    private int E;                      // number of edges in this digraph
-    private Bag<DirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v  מערך שכל תא זה האוסף של השכנים של הקודקוד הספציפי
-    private int[] indegree;             // indegree[v] = indegree of vertex v  מערך שכל תא שומר את מספר הצלעות שמחוברות אליו
+    private int Queries;                // number of vertices in this digraph
+    private int u;   
+    private int v;
+    private int numBl;
+    private int[] nodesBL;   
     
     /**
      * Initializes an empty edge-weighted digraph with <tt>V</tt> vertices and 0 edges.
@@ -19,7 +18,7 @@ public class Graph {
      * @param  V the number of vertices
      * @throws IllegalArgumentException if <tt>V</tt> < 0
      */
-    public Graph(int V) {
+    /*public Graph(int V) {
         if (V < 0) throw new IllegalArgumentException("Number of vertices in a Digraph must be nonnegative");
         this.V = V;
         this.E = 0;
@@ -28,7 +27,7 @@ public class Graph {
         for (int v = 0; v < V; v++)
             adj[v] = new Bag<DirectedEdge>();
     }
-
+*/
     /**
      * Initializes a random edge-weighted digraph with <tt>V</tt> vertices and <em>E</em> edges.
      *
@@ -37,7 +36,7 @@ public class Graph {
      * @throws IllegalArgumentException if <tt>V</tt> < 0
      * @throws IllegalArgumentException if <tt>E</tt> < 0
      */
-    public Graph(int V, int E) {
+    /*public Graph(int V, int E) {
         this(V);
         if (E < 0) throw new IllegalArgumentException("Number of edges in a Digraph must be nonnegative");
         for (int i = 0; i < E; i++) {
@@ -47,7 +46,7 @@ public class Graph {
             DirectedEdge e = new DirectedEdge(v, w, weight);
             addEdge(e);
         }
-    }
+    }*/
 
     /**  
      * Initializes an edge-weighted digraph from the specified input stream.
@@ -60,11 +59,11 @@ public class Graph {
      * @throws IndexOutOfBoundsException if the endpoints of any edge are not in prescribed range
      * @throws IllegalArgumentException if the number of vertices or edges is negative
      */
-    public Graph(In in) {
-        this(in.readInt());
-        int E = in.readInt();
-        if (E < 0) throw new IllegalArgumentException("Number of edges must be nonnegative");
-        for (int i = 0; i < E; i++) {
+    public TestBL(In in) {
+        //this(in.readInt());
+        int q = in.readInt();
+        if (q < 0) throw new IllegalArgumentException("Number of edges must be nonnegative");
+        for (int i = 0; i < q; i++) {
             int v = in.readInt();
             int w = in.readInt();
             if (v < 0 || v >= V) throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));

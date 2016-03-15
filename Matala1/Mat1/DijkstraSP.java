@@ -1,4 +1,5 @@
 package C_R;
+import java.util.Arrays;
 import java.util.Stack;
 
 /******************************************************************************
@@ -141,7 +142,13 @@ public class DijkstraSP {
     }
 
 
-    // check optimality conditions:
+    @Override
+	public String toString() {
+		return "DijkstraSP [distTo=" + Arrays.toString(distTo) + ", edgeTo="
+				+ Arrays.toString(edgeTo) + ", pq=" + pq + "]";
+	}
+
+	// check optimality conditions:
     // (i) for all edges e:            distTo[e.to()] <= distTo[e.from()] + e.weight()
     // (ii) for all edge e on the SPT: distTo[e.to()] == distTo[e.from()] + e.weight()
     private boolean check(Graph G, int s) {

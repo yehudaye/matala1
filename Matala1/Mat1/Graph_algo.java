@@ -1,8 +1,10 @@
 package C_R;
 
+//import java.security.AllPermission;
+
 public class Graph_algo {
 	
-	    private DijkstraSP[] all;
+	    private DijkstraSP[] all;  
 
 	    /**
 	     * Computes a shortest paths tree from each vertex to to every other vertex in
@@ -47,17 +49,28 @@ public class Graph_algo {
 	     *    <tt>Double.POSITIVE_INFINITY</tt> if no such path
 	     */
 	    
-	    public double dist(int s, int t) {
+	    public double dist(int s, int t) {   
 	        return all[s].distTo(t);
 	    }
 	    
-	    /*public static void main(String[] args) {
+	    /*public void printallpath()
+	    {
+	    	for(int i=0;i<all.length;i++){
+	    		System.out.println(all[i]);
+	    	}
+	    }*/
+	    
+	    /*public Iterable<DirectedEdge> pathBL(int s, int t, Bag<DirectedEdge> bl) {   // פונקציה שלנו לממש (רשימה שחור    	    	
+	    	return all[s].pathTo(t);
+	    }*/
+	    
+	    public static void main(String[] args) {
         In in = new In("tinyEWD.txt");
         Graph G = new Graph(in);
         Graph_algo T = new Graph_algo(G);
-        StdOut.println(T.dist(1,4));
-        StdOut.println(T.path(1,4));      
+        //StdOut.println(T.dist(6,3));
+        StdOut.println(T.path(2,6));    
+        //T.printallpath();
     }
-    */
 }
 
