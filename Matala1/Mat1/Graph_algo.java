@@ -60,15 +60,17 @@ public class Graph_algo {
 	    	}
 	    }*/
 	    
-	    /*public Iterable<DirectedEdge> pathBL(int s, int t, Bag<DirectedEdge> bl) {   // פונקציה שלנו לממש (רשימה שחור    	    	
+	    public Iterable<DirectedEdge> pathBL(int s, int t, TestBL bl) {
+	    	for(int i=0;)
+	    	
 	    	return all[s].pathTo(t);
-	    }*/
+	    }
 	    
 	    public static void main(String[] args) {
         In in = new In("tinyEWD.txt");
         Graph G = new Graph(in);
         Graph_algo T = new Graph_algo(G);
-        //StdOut.println(T.dist(6,3));
+        StdOut.println(T.dist(6,3));
         StdOut.println(T.path(2,6));    
         //T.printallpath();
     }
