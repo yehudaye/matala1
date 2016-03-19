@@ -3,7 +3,7 @@ package C_R;
 public class DirectedEdge { 
     private final int v;
     private final int w;
-    private final double weight;
+    private double weight;
 
     public DirectedEdge(int v, int w, double weight) {
         if (v < 0) throw new IndexOutOfBoundsException("Vertex names must be nonnegative integers");
@@ -37,6 +37,10 @@ public class DirectedEdge {
     public double weight() {
         return weight;
     }
+   public void Setweight(double x) {
+	   weight=x;
+   }
+
 
     /**
      * Returns a string representation of the directed edge.

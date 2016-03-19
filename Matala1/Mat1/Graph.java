@@ -217,7 +217,7 @@ public class Graph {
      * Unit tests the <tt>EdgeWeightedDigraph</tt> data type.
      */
     public static void main(String[] args) {
-        In in = new In("tinyEWD.txt");
+        In in = new In("mediumEWD.txt");
         Graph G = new Graph(in);
         StdOut.println(G);
         //System.out.println(G.V +" "+ G.E);
