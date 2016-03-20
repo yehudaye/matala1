@@ -8,7 +8,7 @@ import java.util.Stack;
 public class Graph {
     private static final String NEWLINE = System.getProperty("line.separator");
 
-    private final int V;                // number of vertices in this digraph
+    final static int V=0;                // number of vertices in this digraph
     private int E;                      // number of edges in this digraph
     private Bag<DirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v  מערך שכל תא זה האוסף של השכנים של הקודקוד הספציפי
     private int[] indegree;             // indegree[v] = indegree of vertex v  מערך שכל תא שומר את מספר הצלעות שמחוברות אליו
@@ -212,6 +212,25 @@ public class Graph {
         }
         return s.toString();
     }
+    
+//    public void BlackList(int NumOfVertex [], int NumOfBlackVertex,Graph MyGraph)
+//    {
+//    	for(int i=0; i<NumOfVertex.length;i++)
+//    	{
+//    		for(int j=0;j<NumOfBlackVertex; j++)
+//    		{
+//    			
+//    			if(j!=NumOfVertex[i])
+//    			{
+//    				Graph.update(new DirectedEdge(a[i],j,Double.POSITIVE_INFINITY));
+//    				Graph.update(new DirectedEdge(j,a[i],Double.POSITIVE_INFINITY));
+//
+//    				
+//    			}
+//    		}
+//    	}
+//    	
+//    }
 
     /**
      * Unit tests the <tt>EdgeWeightedDigraph</tt> data type.

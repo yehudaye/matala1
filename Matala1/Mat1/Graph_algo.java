@@ -14,7 +14,8 @@ public class Graph_algo {
 	private DijkstraSP[] all;  
 	private ArrayList<Integer> num;
 	private Bag<DirectedEdge>[] adj;
-	private Queue<Double> q = new Queue<Double>();
+	//private Queue<Double> q = new Queue<Double>();
+	//private int vertex=Graph.V;
 
 	/**
 	 * Computes a shortest paths tree from each vertex to to every other vertex in
@@ -85,6 +86,25 @@ public class Graph_algo {
 			
 		}
 	}
+	
+	public void update (DirectedEdge e) {
+		int v= e.from();
+		int w = e.to();
+		validateVertex(v);
+		validateVertex(w);
+		adj[v].remove(index_Num(v,w));
+		adj[v].add(e);
+	}
+	
+	private int index_Num(int u, int v) {
+		
+		
+	}
+	
+    private void validateVertex(int v) {
+        if (v < 0 || v >= Graph.V)
+            throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
+    }
 
 	public static void main(String[] args) {
 		In in = new In("mediumEWD.txt");
