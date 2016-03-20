@@ -71,7 +71,7 @@ public class Graph_algo {
 	    	}
 	    }*/
 
-	@SuppressWarnings("rawtypes")
+/*	@SuppressWarnings("rawtypes")
 	public void pathBL(ArrayList<Integer> num2) {
 		num= new ArrayList<Integer>();
 		for (int i = 0; i < num2.size(); i++) {
@@ -86,31 +86,17 @@ public class Graph_algo {
 			
 		}
 	}
+	*/
 	
-	public void update (DirectedEdge e) {
-		int v= e.from();
-		int w = e.to();
-		validateVertex(v);
-		validateVertex(w);
-		adj[v].remove(index_Num(v,w));
-		adj[v].add(e);
-	}
 	
-	private int index_Num(int u, int v) {
-		
-		
-	}
 	
-    private void validateVertex(int v) {
-        if (v < 0 || v >= Graph.V)
-            throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
-    }
+	
+   
 
 	public static void main(String[] args) {
 		In in = new In("mediumEWD.txt");
 		Graph G = new Graph(in);
 		Graph_algo T = new Graph_algo(G);
-		StdOut.println(T.dist(6,3));
 		StdOut.println(T.path(2,6));    
 		//T.printallpath();
 		

@@ -10,7 +10,7 @@ public class Graph {
 
     final static int V=0;                // number of vertices in this digraph
     private int E;                      // number of edges in this digraph
-    private Bag<DirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v  מערך שכל תא זה האוסף של השכנים של הקודקוד הספציפי
+    private static Bag<DirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v  מערך שכל תא זה האוסף של השכנים של הקודקוד הספציפי
     private int[] indegree;             // indegree[v] = indegree of vertex v  מערך שכל תא שומר את מספר הצלעות שמחוברות אליו
     
     /**
@@ -117,7 +117,7 @@ public class Graph {
     }
 
     // throw an IndexOutOfBoundsException unless 0 <= v < V
-    private void validateVertex(int v) {
+    private static void validateVertex(int v) {
         if (v < 0 || v >= V)
             throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
     }
@@ -213,24 +213,47 @@ public class Graph {
         return s.toString();
     }
     
-//    public void BlackList(int NumOfVertex [], int NumOfBlackVertex,Graph MyGraph)
-//    {
-//    	for(int i=0; i<NumOfVertex.length;i++)
-//    	{
-//    		for(int j=0;j<NumOfBlackVertex; j++)
-//    		{
-//    			
-//    			if(j!=NumOfVertex[i])
-//    			{
-//    				Graph.update(new DirectedEdge(a[i],j,Double.POSITIVE_INFINITY));
-//    				Graph.update(new DirectedEdge(j,a[i],Double.POSITIVE_INFINITY));
-//
-//    				
-//    			}
-//    		}
-//    	}
-//    	
-//    }
+    public void BlackList(int NumOfVertex [], int NumOfBlackVertex,Graph MyGraph)
+    {
+    	for(int i=0; i<NumOfVertex.length;i++)
+   	{
+    		for(int j=0;j<NumOfBlackVertex; j++)
+  		{
+  			
+   			if(j!=NumOfVertex[i])
+    			{
+   				Graph.update(new DirectedEdge(NumOfVertex[i],j,Double.POSITIVE_INFINITY));
+    				Graph.update(new DirectedEdge(j,NumOfVertex[i],Double.POSITIVE_INFINITY));
+
+    				
+    			}
+   		}
+    	}
+   	
+    }
+    
+    public static void update (DirectedEdge e) {
+		int v= e.from();
+		int w = e.to();
+		validateVertex(v);
+		validateVertex(w);
+		adj[v].remove(index_Num(v,w));
+		adj[v].add(e);
+	}
+    
+    private int index_Num(int from, int to) {
+	int index =0;
+	for(DirectedEdge e: adj(from)){
+		int d = e.to();
+		if(d==to)
+		{
+			return index;
+		}
+	}
+	return d;
+		
+		
+	}
 
     /**
      * Unit tests the <tt>EdgeWeightedDigraph</tt> data type.
