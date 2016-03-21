@@ -1,6 +1,7 @@
 package C_R;
 
 import java.util.Stack;
+import java.util.Vector;
 
 
 
@@ -8,9 +9,9 @@ import java.util.Stack;
 public class Graph {
     private static final String NEWLINE = System.getProperty("line.separator");
 
-    final static int V=0;                // number of vertices in this digraph
+    static int V=0;                // number of vertices in this digraph
     private int E;                      // number of edges in this digraph
-    private static Bag<DirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v  מערך שכל תא זה האוסף של השכנים של הקודקוד הספציפי
+    private  Vector<DirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v  מערך שכל תא זה האוסף של השכנים של הקודקוד הספציפי
     private int[] indegree;             // indegree[v] = indegree of vertex v  מערך שכל תא שומר את מספר הצלעות שמחוברות אליו
     
     /**
@@ -24,9 +25,9 @@ public class Graph {
         this.V = V;
         this.E = 0;
         this.indegree = new int[V];
-        adj = (Bag<DirectedEdge>[]) new Bag[V];
+        adj =  new Vector[V];
         for (int v = 0; v < V; v++)
-            adj[v] = new Bag<DirectedEdge>();
+            adj[v] = new Vector<DirectedEdge>();
     }
 
     /**
@@ -185,7 +186,7 @@ public class Graph {
      * @return all edges in this edge-weighted digraph, as an iterable
      */
     public Iterable<DirectedEdge> edges() {
-        Bag<DirectedEdge> list = new Bag<DirectedEdge>();
+        Vector<DirectedEdge> list = new Vector<DirectedEdge>();
         for (int v = 0; v < V; v++) {
             for (DirectedEdge e : adj(v)) {
                 list.add(e);
@@ -213,44 +214,47 @@ public class Graph {
         return s.toString();
     }
     
-    public void BlackList(int NumOfVertex [], int NumOfBlackVertex,Graph MyGraph)
+  	
+    public void Black_List(int [] a)	
     {
-    	for(int i=0; i<NumOfVertex.length;i++)
-   	{
-    		for(int j=0;j<NumOfBlackVertex; j++)
-  		{
-  			
-   			if(j!=NumOfVertex[i])
-    			{
-   				Graph.update(new DirectedEdge(NumOfVertex[i],j,Double.POSITIVE_INFINITY));
-    				Graph.update(new DirectedEdge(j,NumOfVertex[i],Double.POSITIVE_INFINITY));
-
-    				
-    			}
-   		}
+    	for(int i=0;i<a.length;i++)
+    	{
+    		for(DirectedEdge e:adj(i))
+    		{
+    			if(e.from()==a[i] || e.to() ==a[i])
+    			
+    		 this.remove(e);
+    		}
     	}
-   	
+    }
+    public void remove(DirectedEdge e)
+    {
+    	int v= e.from();
+		int w = e.to();
+		validateVertex(v);
+		validateVertex(w);
+		adj[v].removeElementAt( index_Num(v,w));
+	
     }
     
-    public static void update (DirectedEdge e) {
+    public  void update (DirectedEdge e) {
 		int v= e.from();
 		int w = e.to();
 		validateVertex(v);
 		validateVertex(w);
-		adj[v].remove(index_Num(v,w));
-		adj[v].add(e);
+		adj[v].insertElementAt(e, index_Num(v,w));
 	}
     
     private int index_Num(int from, int to) {
 	int index =0;
 	for(DirectedEdge e: adj(from)){
-		int d = e.to();
-		if(d==to)
+		int destonation = e.to();
+		if(destonation==to)
 		{
 			return index;
 		}
 	}
-	return d;
+	return -1;
 		
 		
 	}
