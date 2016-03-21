@@ -1,272 +1,118 @@
-package C_R;
-
+/*
+ * Decompiled with CFR 0_114.
+ */
+import java.util.Iterator;
 import java.util.Stack;
-import java.util.Vector;
 
-
-
-//Directed Graph
 public class Graph {
     private static final String NEWLINE = System.getProperty("line.separator");
+    private final int V;
+    private int E;
+    private Bag<Integer>[] adj;
 
-    static int V=0;                // number of vertices in this digraph
-    private int E;                      // number of edges in this digraph
-    private  Vector<DirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v  מערך שכל תא זה האוסף של השכנים של הקודקוד הספציפי
-    private int[] indegree;             // indegree[v] = indegree of vertex v  מערך שכל תא שומר את מספר הצלעות שמחוברות אליו
-    
-    /**
-     * Initializes an empty edge-weighted digraph with <tt>V</tt> vertices and 0 edges.
-     *
-     * @param  V the number of vertices
-     * @throws IllegalArgumentException if <tt>V</tt> < 0
-     */
     public Graph(int V) {
-        if (V < 0) throw new IllegalArgumentException("Number of vertices in a Digraph must be nonnegative");
+        if (V < 0) {
+            throw new IllegalArgumentException("Number of vertices must be nonnegative");
+        }
         this.V = V;
         this.E = 0;
-        this.indegree = new int[V];
-        adj =  new Vector[V];
-        for (int v = 0; v < V; v++)
-            adj[v] = new Vector<DirectedEdge>();
-    }
-
-    /**
-     * Initializes a random edge-weighted digraph with <tt>V</tt> vertices and <em>E</em> edges.
-     *
-     * @param  V the number of vertices
-     * @param  E the number of edges
-     * @throws IllegalArgumentException if <tt>V</tt> < 0
-     * @throws IllegalArgumentException if <tt>E</tt> < 0
-     */
-    public Graph(int V, int E) {
-        this(V);
-        if (E < 0) throw new IllegalArgumentException("Number of edges in a Digraph must be nonnegative");
-        for (int i = 0; i < E; i++) {
-            int v = StdRandom.uniform(V);
-            int w = StdRandom.uniform(V);
-            double weight = .01 * StdRandom.uniform(100);
-            DirectedEdge e = new DirectedEdge(v, w, weight);
-            addEdge(e);
+        this.adj = new Bag[V];
+        int v = 0;
+        while (v < V) {
+            this.adj[v] = new Bag();
+            ++v;
         }
     }
 
-    /**  
-     * Initializes an edge-weighted digraph from the specified input stream.
-     * The format is the number of vertices <em>V</em>,
-     * followed by the number of edges <em>E</em>,
-     * followed by <em>E</em> pairs of vertices and edge weights,
-     * with each entry separated by whitespace.
-     *
-     * @param  in the input stream
-     * @throws IndexOutOfBoundsException if the endpoints of any edge are not in prescribed range
-     * @throws IllegalArgumentException if the number of vertices or edges is negative
-     */
     public Graph(In in) {
         this(in.readInt());
         int E = in.readInt();
-        if (E < 0) throw new IllegalArgumentException("Number of edges must be nonnegative");
-        for (int i = 0; i < E; i++) {
+        if (E < 0) {
+            throw new IllegalArgumentException("Number of edges must be nonnegative");
+        }
+        int i = 0;
+        while (i < E) {
             int v = in.readInt();
             int w = in.readInt();
-            if (v < 0 || v >= V) throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
-            if (w < 0 || w >= V) throw new IndexOutOfBoundsException("vertex " + w + " is not between 0 and " + (V-1));
-            double weight = in.readDouble();
-            if(weight<0)
-            	weight= Double.POSITIVE_INFINITY;
-            addEdge(new DirectedEdge(v, w, weight));
+            this.addEdge(v, w);
+            ++i;
         }
     }
 
-    /**
-     * Initializes a new edge-weighted digraph that is a deep copy of <tt>G</tt>.
-     *
-     * @param  G the edge-weighted digraph to copy
-     */
     public Graph(Graph G) {
         this(G.V());
         this.E = G.E();
-        for (int v = 0; v < G.V(); v++)
-            this.indegree[v] = G.indegree(v);
-        for (int v = 0; v < G.V(); v++) {
-            // reverse so that adjacency list is in same order as original
-            Stack<DirectedEdge> reverse = new Stack<DirectedEdge>();
-            for (DirectedEdge e : G.adj[v]) {
-                reverse.push(e);
+        int v = 0;
+        while (v < G.V()) {
+            int w;
+            Stack<Integer> reverse = new Stack<Integer>();
+            Iterator iterator = G.adj[v].iterator();
+            while (iterator.hasNext()) {
+                w = (int) iterator.next();
+                reverse.push(w);
             }
-            for (DirectedEdge e : reverse) {
-                adj[v].add(e);
+            iterator = reverse.iterator();
+            while (iterator.hasNext()) {
+                w = (Integer)iterator.next();
+                this.adj[v].add(w);
             }
+            ++v;
         }
     }
 
-    /**
-     * Returns the number of vertices in this edge-weighted digraph.
-     *
-     * @return the number of vertices in this edge-weighted digraph
-     */
     public int V() {
-        return V;
+        return this.V;
     }
 
-    /**
-     * Returns the number of edges in this edge-weighted digraph.
-     *
-     * @return the number of edges in this edge-weighted digraph
-     */
     public int E() {
-        return E;
+        return this.E;
     }
 
-    // throw an IndexOutOfBoundsException unless 0 <= v < V
-    private static void validateVertex(int v) {
-        if (v < 0 || v >= V)
-            throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
-    }
-
-    /**
-     * Adds the directed edge <tt>e</tt> to this edge-weighted digraph.
-     *
-     * @param  e the edge
-     * @throws IndexOutOfBoundsException unless endpoints of edge are between 0 and V-1
-     */
-    public void addEdge(DirectedEdge e) {
-        int v = e.from();
-        int w = e.to();
-        validateVertex(v);
-        validateVertex(w);
-        adj[v].add(e);
-        indegree[w]++;
-        E++;
-    }
-
-
-    /**
-     * Returns the directed edges incident from vertex <tt>v</tt>.
-     *
-     * @param  v the vertex
-     * @return the directed edges incident from vertex <tt>v</tt> as an Iterable
-     * @throws IndexOutOfBoundsException unless 0 <= v < V
-     */
-    public Iterable<DirectedEdge> adj(int v) {
-        validateVertex(v);
-        return adj[v];
-    }
-
-    /**
-     * Returns the number of directed edges incident from vertex <tt>v</tt>.
-     * This is known as the <em>outdegree</em> of vertex <tt>v</tt>.
-     *
-     * @param  v the vertex
-     * @return the outdegree of vertex <tt>v</tt>
-     * @throws IndexOutOfBoundsException unless 0 <= v < V
-     */
-    public int outdegree(int v) {
-        validateVertex(v);
-        return adj[v].size();
-    }
-
-    /**
-     * Returns the number of directed edges incident to vertex <tt>v</tt>.
-     * This is known as the <em>indegree</em> of vertex <tt>v</tt>.
-     *
-     * @param  v the vertex
-     * @return the indegree of vertex <tt>v</tt>
-     * @throws IndexOutOfBoundsException unless 0 <= v < V
-     */
-    public int indegree(int v) {
-        validateVertex(v);
-        return indegree[v];
-    }
-
-    /**
-     * Returns all directed edges in this edge-weighted digraph.
-     * To iterate over the edges in this edge-weighted digraph, use foreach notation:
-     * <tt>for (DirectedEdge e : G.edges())</tt>.
-     *
-     * @return all edges in this edge-weighted digraph, as an iterable
-     */
-    public Iterable<DirectedEdge> edges() {
-        Vector<DirectedEdge> list = new Vector<DirectedEdge>();
-        for (int v = 0; v < V; v++) {
-            for (DirectedEdge e : adj(v)) {
-                list.add(e);
-            }
+    private void validateVertex(int v) {
+        if (v < 0 || v >= this.V) {
+            throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (this.V - 1));
         }
-        return list;
-    } 
+    }
 
-    /**
-     * Returns a string representation of this edge-weighted digraph.
-     *
-     * @return the number of vertices <em>V</em>, followed by the number of edges <em>E</em>,
-     *         followed by the <em>V</em> adjacency lists of edges
-     */
+    public void addEdge(int v, int w) {
+        this.validateVertex(v);
+        this.validateVertex(w);
+        ++this.E;
+        this.adj[v].add(w);
+        this.adj[w].add(v);
+    }
+
+    public Iterable<Integer> adj(int v) {
+        this.validateVertex(v);
+        return this.adj[v];
+    }
+
+    public int degree(int v) {
+        this.validateVertex(v);
+        return this.adj[v].size();
+    }
+
     public String toString() {
         StringBuilder s = new StringBuilder();
-        s.append(V + " " + E + NEWLINE);
-        for (int v = 0; v < V; v++) {
-            s.append(v + ": ");
-            for (DirectedEdge e : adj[v]) {
-                s.append(e + "  ");
+        s.append(String.valueOf(this.V) + " vertices, " + this.E + " edges " + NEWLINE);
+        int v = 0;
+        while (v < this.V) {
+            s.append(String.valueOf(v) + ": ");
+            Iterator<Integer> iterator = this.adj[v].iterator();
+            while (iterator.hasNext()) {
+                int w = iterator.next();
+                s.append(String.valueOf(w) + " ");
             }
             s.append(NEWLINE);
+            ++v;
         }
         return s.toString();
     }
-    
-  	
-    public void Black_List(int [] a)	
-    {
-    	for(int i=0;i<a.length;i++)
-    	{
-    		for(DirectedEdge e:adj(i))
-    		{
-    			if(e.from()==a[i] || e.to() ==a[i])
-    			
-    		 this.remove(e);
-    		}
-    	}
-    }
-    public void remove(DirectedEdge e)
-    {
-    	int v= e.from();
-		int w = e.to();
-		validateVertex(v);
-		validateVertex(w);
-		adj[v].removeElementAt( index_Num(v,w));
-	
-    }
-    
-    public  void update (DirectedEdge e) {
-		int v= e.from();
-		int w = e.to();
-		validateVertex(v);
-		validateVertex(w);
-		adj[v].insertElementAt(e, index_Num(v,w));
-	}
-    
-    private int index_Num(int from, int to) {
-	int index =0;
-	for(DirectedEdge e: adj(from)){
-		int destonation = e.to();
-		if(destonation==to)
-		{
-			return index;
-		}
-	}
-	return -1;
-		
-		
-	}
 
-    /**
-     * Unit tests the <tt>EdgeWeightedDigraph</tt> data type.
-     */
     public static void main(String[] args) {
-        In in = new In("mediumEWD.txt");
+        In in = new In(args[0]);
         Graph G = new Graph(in);
         StdOut.println(G);
-        //System.out.println(G.V +" "+ G.E);
     }
-	
 }
+
