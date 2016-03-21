@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Bag<Item> implements Iterable<Item> {
-    private Node<Item> first;    // beginning of bag
+    private Node<Item> first;    // begi of bag
     private int N;               // number of elements in bag
 
     // helper linked list class
