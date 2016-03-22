@@ -1,3 +1,5 @@
+package C_R;
+
 /*
  * Decompiled with CFR 0_114.
  */
@@ -21,15 +23,15 @@ public class Main_Ex1 {
     }
 
     public static void main0(String[] args) {
-        String f = "data/mediumEWD.txt";
-        String test = "data/test1.txt";
+        String f = "mediumEWD.txt";
+        String test = "test3.txt";
         if (args != null && args.length > 2) {
             f = args[0];
             test = args[1];
         }
         String ans = String.valueOf(test) + "._ans.txt";
         In in = new In(f);
-        EdgeWeightedDigraph G = new EdgeWeightedDigraph(in);
+        Graph G = new Graph(in);
         int s = Integer.parseInt("1");
         DijkstraSP sp = new DijkstraSP(G, s);
         int t = 0;
@@ -61,13 +63,15 @@ public class Main_Ex1 {
 
     private static void main1(String[] cmds) throws Exception {
         long start = new Date().getTime();
+        String f = "data/mediumEWD.txt";
+        String test = "data/test1.txt";
         System.out.println("SE1 Ex1: partual solution - for student testing");
         System.out.println("Loading graph file: " + cmds[0] + " runing a test " + cmds[1]);
         String ans = "Solution_" + cmds[1] + "_" + cmds[0] + "_" + start + "_.txt";
         FileWriter fw = new FileWriter(ans);
         PrintWriter os = new PrintWriter(fw);
         In in = new In(cmds[0]);
-        EdgeWeightedDigraph G = new EdgeWeightedDigraph(in);
+        Graph G = new Graph(in);
         long s1 = new Date().getTime();
         System.out.println("Done loading Graph: " + cmds[0] + "  in " + (s1 - start) + "  ms");
         FileReader fr = new FileReader(cmds[1]);
@@ -98,7 +102,7 @@ public class Main_Ex1 {
         os.close();
     }
 
-    public static double sp(EdgeWeightedDigraph G, int source, int target, int[] BL) {
+    public static double sp(Graph G, int source, int target, int[] BL) {
         double ans = -1.0;
         G.setValidateVertex(BL, false);
         DijkstraSP sp = new DijkstraSP(G, source);

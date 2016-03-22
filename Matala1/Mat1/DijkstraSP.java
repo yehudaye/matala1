@@ -1,3 +1,5 @@
+package C_R;
+
 /*
  * Decompiled with CFR 0_114.
  */
@@ -9,7 +11,7 @@ public class DijkstraSP {
     private DirectedEdge[] edgeTo;
     private IndexMinPQ<Double> pq;
 
-    public DijkstraSP(EdgeWeightedDigraph G, int s) {
+    public DijkstraSP(Graph G, int s) {
         for (DirectedEdge e : G.edges()) {
             if (e.weight() >= 0.0) continue;
             throw new IllegalArgumentException("edge " + e + " has negative weight");
@@ -71,7 +73,7 @@ public class DijkstraSP {
         return path;
     }
 
-    private boolean check(EdgeWeightedDigraph G, int s) {
+    private boolean check(Graph G, int s) {
         for (DirectedEdge e : G.edges()) {
             if (e.weight() >= 0.0) continue;
             System.err.println("negative edge weight detected");
@@ -124,7 +126,7 @@ public class DijkstraSP {
             f = args[0];
         }
         In in = new In(f);
-        EdgeWeightedDigraph G = new EdgeWeightedDigraph(in);
+        Graph G = new Graph(in);
         int s = Integer.parseInt("1");
         DijkstraSP sp = new DijkstraSP(G, s);
         int t = 0;
