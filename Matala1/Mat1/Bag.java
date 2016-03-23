@@ -1,11 +1,12 @@
-package C_R;
+package M_1;
+
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Bag<Item> implements Iterable<Item> {
     private Node<Item> first;    // beginning of bag
-    private int N;               // number of elements in bag
+    private int N;               //  number of elements in bag
 
     // helper linked list class
     private static class Node<Item> {

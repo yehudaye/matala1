@@ -1,7 +1,7 @@
-package C_R;
-/*
- * Decompiled with CFR 0_114.
- */
+package M_1;
+
+
+ //D
 public class DirectedEdge {
     public static final double INF = 1.7976931348623156E305;
     private final int v;

@@ -1,8 +1,7 @@
-package C_R;
+package M_1;
 
-/*
- * Decompiled with CFR 0_114.
- */
+//AA
+
 public class Edge
 implements Comparable<Edge> {
     private final int v;

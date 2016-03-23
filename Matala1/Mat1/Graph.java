@@ -1,9 +1,6 @@
-package C_R;
+package M_1;
 
-/*
-
- * Decompiled with CFR 0_114.
- */
+//AA
 import java.util.Stack;
 
 public class Graph {
@@ -178,7 +175,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-      In in = new In(args[0]);
+      In in = new In("largeEWD.txt");
         Graph G = new Graph(in);
         StdOut.println(G);
     }

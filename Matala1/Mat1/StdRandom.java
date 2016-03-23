@@ -1,7 +1,6 @@
-package C_R;
-/*
- * Decompiled with CFR 0_114.
- */
+package M_1;
+//Q
+
 import java.util.Random;
 
 public final class StdRandom {

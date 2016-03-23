@@ -1,7 +1,6 @@
-package C_R;
-/*
- * Decompiled with CFR 0_114.
- */
+package M_1;
+//A
+
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.ByteArrayInputStream;

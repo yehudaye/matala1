@@ -1,8 +1,6 @@
-package C_R;
+package M_1;
+//QQ
 
-/*
- * Decompiled with CFR 0_114.
- */
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;

@@ -1,9 +1,7 @@
-package C_R;
+package M_1;
 
+//A
 
-/*
- * Decompiled with CFR 0_114.
- */
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
