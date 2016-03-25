@@ -1,0 +1,5 @@
+4 5 1 0 0.11184
+4 7 0 Infinity
+5 7 2 0 1 Infinity
+0 7 0 Infinity
+7 0 0 Infinity

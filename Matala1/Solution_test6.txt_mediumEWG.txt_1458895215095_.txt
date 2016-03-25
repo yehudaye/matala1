@@ -1,0 +1,20 @@
+0 200 1 1 Infinity
+1 201 3 14 44 128 Infinity
+2 202 0 Infinity
+100 0 5 14 13 129 36 223 Infinity
+3 203 0 Infinity
+4 204 0 0.37555999999999995
+5 204 0 0.26372
+6 204 0 Infinity
+7 204 0 0.38347
+8 204 0 Infinity
+9 204 8 1 2 3 4 5 6 7 8 0.1994
+4 200 0 Infinity
+9 199 8 1 2 3 4 5 6 7 8 Infinity
+0 150 5 1 2 3 4 5  Infinity
+2 199 8 8 5 4 7 11 5 7 8 Infinity
+0 0 0 0.0
+0 1 1 7 Infinity
+200 5 4 13 129 36 223 Infinity
+210 202 1 200 Infinity
+0 2 1 1 Infinity

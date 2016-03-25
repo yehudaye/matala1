@@ -1,4 +1,0 @@
-1 100 1 0 Infinity
-1 100 3 14 44 128 Infinity
-100 1 0 Infinity
-100 1 5 14 13 129 36 223 Infinity
